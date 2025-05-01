@@ -4,252 +4,343 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">
-		@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
-		@import url("https://fonts.googleapis.com/css?family=PT+Mono");
-		*,*::after,*::before {
-  box-sizing:border-box;
+		@import url('https://fonts.googleapis.com/css?family=BenchNine:300,400');
+
+*, *:after, *:before {
+  box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(circle at 50% 50%, #eeeeee 0%, #333 100%);
-  font-family: 'PT Mono';
+html {
+  background: white;
+  overflow: hidden;
+  font-family: 'BenchNine', sans-serif;
 }
 
-h1 {
-  margin: 0;
-  font-family: 'Montserrat';
-  position:absolute;top:50%;left:50%;
-  height:200px;width:200px;;text-align:center;line-height:200px;font-size:200px;
-  font-weight: 400;
-  color: rgba(230,230,230,1);
-  text-shadow: 0 0px 50px rgba(255,255,255,.75), 0 0px 150px rgba(255,255,255,0.5), 0 0px 200px rgba(255,255,255,0);
-  transform: translate(-55%, -50%);
-  transform-origin: 50%;
-  cursor: pointer;
-  z-index: 100;
-  transition: all .25s;
-}
-
-h1.off {
-  color: transparent;
-   text-shadow: 0 1px 1px rgba(255,255,255,0.35), 0 -1px 1px rgba(0,0,0,0.15);
-}
-
-h1 span {
-  font-size: 30px;
-  display: block;
-  position:absolute;
-  top: 0;
-  left: 120px;
-}
-
-#clock {
-  position: absolute;
-  top: 50%;
+.clock-container {
+  position: fixed;
   left: 50%;
-  width: 460px;
-  height: 460px;
-  border-radius: 50%;
+  top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #111;
+  box-shadow: 0 0 25px 3px #000, 0 0 10px rgba(0, 0, 0, 0.8) inset;
 }
 
-h1.off + #clock {
-  background-image: linear-gradient(60deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.5) 45%, rgba(255,255,255,.25) 55%, rgba(255,255,255,.35) 55.5%, rgba(255,255,255,0.3) 60%, rgba(255,255,255,0.2) 68%, rgba(255,255,255,0.1) 72%, rgba(255,255,255,0.25) 75%, rgba(255,255,255,0) 100%), radial-gradient(circle at 50% 10%, rgba(180,180,180,1) 0%, rgba(140,140,140,1) 80%);
-  box-shadow: inset 0 10px 10px 0px rgba(0,0,0,0.35), inset 0 -3px 1px rgba(222,220,210,1), 0 1px 0 1px rgba(255,255,255,0.5), 0 0 0px 10px rgba(222,98,0,.3), 0 0 0 11px rgba(255,255,255,0.5), 0 30px 50px 20px rgba(0,0,0,0.5);
+.clock-container .spear {
+  position: absolute;
+  width: 220px;
+  height: 1px;
+  background: red;
+  left: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.4);
 }
 
-#clock::after{
+.clock-container .spear:after {
   content: '';
   position: absolute;
-  border: 1px solid #000;
-  width: 100px;
-  height:30px;
-  transition-origin: 50%;
-  top: 50%;
-  left: 50%;
-  box-shadow: inset 0 0 20px 0px rgba(255,255,255,1), 0 0 100px 1000px rgba(0,0,0,0.75);
-  transition: all .5s;
-  transform: translate(120px, -50%)
+  border: 7px solid transparent;
+  border-right-color: red;
+  right: 0;
+  top: -7px;
 }
 
-#clock::before {
+.clock-container .spear:before {
   content: '';
-  position:absolute;
-  border: 1px dashed #000;
-  border-top:0;
-  border-bottom: 0;
-  width:30px;height:10px;
-  right:0;
-  top:50%;
-  margin: -5px 44px 0 0;
-  animation: pulse 1s infinite;
-}
-
-h1.off + #clock::after {
-  box-shadow: 0 0 100px 1000px rgba(0,0,0,0), 0 0px 1px rgba(0,0,0,0.25);
-  background: linear-gradient(to bottom, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,.15) 100%);
-  border: 1px solid rgba(0,0,0,0);
-  border-bottom: 1px solid rgba(0,0,0,0.15);
-  border-radius: 4px;
-}
-
-h1.off + #clock::before {
-  border: 1px dashed rgba(80,80,80,1);
-  border-top:0;border-bottom: 0;
-  opacity: 1;
-  animation: none;
-}
-
-ul {
   position: absolute;
-  margin: 0;
-  padding: 0;
-  top: 50%;
-  left: 50%;
+  border: 7px solid transparent;
+  border-left-color: red;
+  left: 2px;
+  top: -7px;
+}
+
+.clock-container .clock-analog {
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  margin: 20px;
+  background: #fff;
+  z-index: 5;
+  position: relative;
+  box-shadow: 0 0 25px 3px #000 inset;
+}
+
+.clock-container .clock-analog .second,
+.clock-container .clock-analog .minute,
+.clock-container .clock-analog .hour {
   width: 20px;
   height: 20px;
-  list-style: none;
-  margin: -10px 0 0 -10px;
-}
-
-#s,#m,#h {
-  transform: rotateZ(0deg);
-  transition: all .5s cubic-bezier(0.5, -0.5, 0.500, 1.5);
-}
-
-li {
   position: absolute;
-  transition: all .25s;
+  left: 0; top: 0; right: 0; bottom: 0;
+  margin: auto;
+  z-index: 100;
+  transition: 0.2s 0.2s ease-in;
+  transform: rotate(90deg);
+}
+
+.clock-container .clock-analog .second span,
+.clock-container .clock-analog .minute span,
+.clock-container .clock-analog .hour span {
+  position: absolute;
   width: 20px;
   height: 20px;
   line-height: 20px;
-  text-align: right;
-  opacity: 0.2;
+  text-align: center;
   transform-origin: 50%;
-  transition: all .25s linear .25s
+  z-index: 5;
 }
 
-li::after {
-  
+.clock-container .clock-analog .second span:after,
+.clock-container .clock-analog .minute span:after,
+.clock-container .clock-analog .hour span:after {
+  content: '';
+  width: 4px;
+  height: 1px;
+  background: #000;
+  position: absolute;
+  left: 130%;
+  top: -10%;
+  opacity: 0.3;
 }
 
-li.active {
-  color: #424242;
+.clock-container .clock-analog .second span:nth-child(5n + 2):after,
+.clock-container .clock-analog .minute span:nth-child(5n + 2):after,
+.clock-container .clock-analog .hour span:nth-child(5n + 2):after {
+  width: 7px;
   opacity: 1;
-  font-weight: 700;
-  font-size: 18px;
+  left: 110%;
 }
 
-@keyframes pulse {
-  0%,50%  {
-    opacity: 1
-  }
-  51%,100% {
-    opacity: 0
-  }
+.clock-container .clock-analog .hour {
+  z-index: 150;
+  font-size: 32px;
+  font-weight: 400;
 }
+
+.clock-container .clock-analog .hour span:after {
+  opacity: 1;
+  width: 4px;
+  height: 1px;
+  color: #666;
+  transform: translate(5px, 12px);
+}
+
+.clock-container .clock-analog .hour:after {
+  content: '';
+  background: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.6) inset;
+}
+
+.clock-container .clock-analog .minute {
+  color: #fff;
+  font-size: 16px;
+}
+
+.clock-container .clock-analog .minute span:after {
+  background: #fff;
+  transform: translate(10px, -7px) rotate(-9deg);
+}
+
+.clock-container .clock-analog .minute:after {
+  content: '';
+  background: #333;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  box-shadow: 0 0 25px 2px #000 inset;
+}
+
+.clock-container .clock-analog .second {
+  font-size: 12px;
+}
+
+.clock-container .clock-analog .second span:after {
+  transform: translate(5px, -10px);
+}
+
+.clock-container .clock-analog .dail {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 0; top: 0; right: 0; bottom: 0;
+  margin: auto;
+  z-index: 100;
+}
+
+.clock-container .clock-analog .dail span {
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  transform-origin: 50%;
+  text-indent: 1000px;
+  overflow: hidden;
+  position: absolute;
+}
+
+.clock-container .clock-analog .dail span:after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: linear-gradient(to right, rgba(125,126,125,1) 0%, rgba(14,14,14,1) 100%);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.clock-container .clock-analog .dail span:nth-child(5n + 1):after {
+  width: 8px;
+}
+
+.clock-container .clock-digital {
+  position: absolute;
+  z-index: 200;
+  height: 444px;
+  width: 224px;
+  background: #090909;
+  left: 18px;
+  top: 18px;
+  border-radius: 220px 0 0 220px;
+  box-shadow: 5px 0 15px #000;
+}
+
+.clock-container .clock-digital:after {
+  content: '';
+  position: absolute;
+  border: 15px solid #8e0a0a;
+  border-right: none;
+  height: 400px;
+  width: 200px;
+  border-radius: 220px 0 0 220px;
+  left: 25px;
+  top: 25px;
+}
+
+.clock-container .clock-digital .time {
+  background: #111;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  border-radius: 50px;
+  font-size: 24px;
+  padding: 2px 20px;
+  box-shadow: 0 0 15px #000 inset;
+}
+
+.clock-container .clock-digital .day {
+  background: #111;
+  position: absolute;
+  right: 20px;
+  bottom: 100px;
+  color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 0 15px #000 inset;
+  padding: 2px 20px;
+  font-size: 16px;
+}
+
+.clock-container .clock-digital .date {
+  background: #111;
+  position: absolute;
+  right: 20px;
+  top: 100px;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 16px;
+  box-shadow: 0 0 10px #000 inset;
+  padding: 2px 20px;
+}
+
 	</style>
 </head>
 <body>
-<h1 class="off">C<span>SK</span></h1>
-<div id="clock">
-  <ul id="s">
-  </ul>
-  <ul id="m">
-  </ul>
-  <ul id="h">
-  </ul>
+<div class="clock-container">
+    <div class="clock-digital">
+        <div class="date"></div>
+        <div class="time"></div>
+        <div class="day"> </div>
+    </div>
+    <div class="clock-analog">
+        <div class="spear"></div>
+        <div class="hour"></div>
+        <div class="minute"></div>
+        <div class="second"></div>
+        <div class="dail"></div>
+    </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
-	function draw(){
-  for(i=0;i<60;i++){
-    D = (i<10) ? '0'+i : i;
-    $('#s').append('<li data-item='+D+'>'+D+'</li>');
-  }
-  for(i=0;i<60;i++){
-     D = (i<10) ? '0'+i : i;
-    $('#m').append('<li data-item='+D+'>'+D+'</li>');
-  }
-  for(i=0;i<24;i++){
-     D = (i<10) ? '0'+i : i;
-    $('#h').append('<li data-item='+D+'>'+D+'</li>');
-  }
-}
-function place(){
-  hdeg = 15;
-  msdeg = 6;
-  $('#s li').each(function(index){
-    $(this).css({transform: 'rotateZ('+msdeg * index +'deg) translateX('+ parseInt(200) +'px)'});
-  });
-  $('#m li').each(function(index){
-    $(this).css({transform: 'rotateZ('+msdeg * index +'deg) translateX('+ parseInt(170) +'px)'});
-  });
-  $('#h li').each(function(index){
-    $(this).css({transform: 'rotateZ('+hdeg * index +'deg) translateX('+ parseInt(140) +'px)'});
-  });
-}
-//TIMER
-function sec(ts,timer){
-  TS = ts % 60;
-  if(ts == 0 && timer) min(0,timer);
-  deg = 360/60 * ts;
-  $('#s li').removeClass('active');
-  $('#s li').eq(TS).addClass('active');
-  $('#s').css({transform: 'rotateZ(-'+deg+'deg)'});
-  ts++;
-  if(timer) setTimeout(function(){sec(ts,timer)},TIME * 1000);
-}
-function min(tm,timer){
-  TM = tm % 60;
-  if(tm == 0 && timer) hour(0,timer);
-  deg = 360/60 * tm;
-  $('#m li').removeClass('active');
-  $('#m li').eq(TM).addClass('active');
-  $('#m').css({transform: 'rotateZ(-'+deg+'deg)'});
-  tm++;
-  if(timer) setTimeout(function(){min(tm,timer)}, TIME * 60000);
-}
-function hour(th,timer){
-  TH = th % 24;
-  deg = 360/24 * th;
-  $('#h li').removeClass('active');
-  $('#h li').eq(TH).addClass('active');
-  $('#h').css({transform: 'rotateZ(-'+deg+'deg)'});
-  th++;
-  if(timer) setTimeout(function(){hour(th,timer)}, TIME * 3600000);
-}
-//CLOCK
-function clock(){
-  d = new Date();
-  H = d.getHours();
-  M = d.getMinutes();
-  S = d.getSeconds();
-  hour(H,0);
-  min(M,0);
-  sec(S,0);
-  setTimeout(function(){clock();},1000);
-}
+	(function() {
 
-$(document).ready(function(){
-  draw();
-  place();
-  //TIMER
-  /*
-  TIME = 1;
-  sec(0,1);
-  */
-  //CLOCK
-  clock();
-  //LIGHT
-  $("h1").click(function(){
-    $(this).toggleClass('off');
-  });
-});
+  
+  var months = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+],
+days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  
+	function getTime() {
+    
+		var date = new Date(),
+    second  = date.getSeconds() ,
+    minute  = date.getMinutes() ,
+    hour    = date.getHours() ,
+    time = date.toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true }),
+     day =  date.getDay() ,
+    month = date.getMonth() ,
+    date = date.getDate() +' . '+ months[month],
+        
+		ds = second * -6,
+		dm = minute * -6,
+		dh = hour * -30;
+    
+		$('.second').css('transform', 'rotate(' + ds + 'deg)');
+    $('.minute').css('transform', 'rotate(' + dm + 'deg)');
+    $('.hour').css('transform', 'rotate(' + dh + 'deg)');
+    
+    $('.time').text(time);
+    $('.day').text(days[day]);
+    $('.date').text( date )
+	}
+  
+  function dailer( selector , size){
+     for(var s = 0; s < 60 ; s++){
+      $(selector).append('<span style="transform: rotate('+ 6 * s +'deg) translateX('+ size +'px)">'+s+'</span>')
+    }
+  }
+  
+  dailer( '.second' , 195);
+  dailer( '.minute' , 145);
+  dailer( '.dail' , 230);
+  
+  for(var s = 1; s < 13 ; s++){
+      $('.hour').append('<span style="transform: rotate('+ 30 * s +'deg) translateX(100px)">'+s+'</span>')
+    }
+  
+  
+  setInterval(getTime, 1000);
+  getTime();
+  
+} ());
+
 </script>
 </body>
 </html>
